@@ -65,7 +65,7 @@ func dataIdentitySourceUserRead(d *schema.ResourceData, m interface{}) error {
 	targetUserID := targetUser.Id.String()
 	d.SetId(targetUserID)
 	// using subjectDescriptor instead of Descriptor
-	d.Set("descriptor", targetUser.SubjectDescriptor)
+	d.Set("descriptor", targetUser.Descriptor)
 	return nil
 }
 
@@ -97,7 +97,7 @@ func flattenIdentityUsers(users *[]identity.Identity) (*[]identity.Identity, err
 			return nil, fmt.Errorf(" User Object does not contain an id")
 		}
 		newUser := identity.Identity{
-			Descriptor:          user.SubjectDescriptor,
+			Descriptor:          user.Descriptor,
 			Id:                  user.Id,
 			ProviderDisplayName: user.ProviderDisplayName,
 			// Add other fields here if needed

@@ -58,7 +58,7 @@ func dataSourceIdentityGroupRead(d *schema.ResourceData, m interface{}) error {
 	targetGroupID := targetGroup.Id.String()
 	d.SetId(targetGroupID)
 	// Testing with the subject Descriptor instead
-	d.Set("descriptor", targetGroup.SubjectDescriptor)
+	d.Set("descriptor", targetGroup.Descriptor)
 	return nil
 }
 
