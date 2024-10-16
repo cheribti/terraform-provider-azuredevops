@@ -62,6 +62,8 @@ func dataIdentitySourceUserRead(d *schema.ResourceData, m interface{}) error {
 
 	// Set id and user list for users data resource
 	targetUserID := targetUser.Id.String()
+	fmt.Printf("Setting user ID: %s\n", targetUserID)                          // Log the user ID being set
+	fmt.Printf("User Subject Descriptor: %s\n", *targetUser.SubjectDescriptor) // Log the subject descriptor
 	d.SetId(targetUserID)
 	d.Set("descriptor", targetUser.SubjectDescriptor)
 	return nil
@@ -88,8 +90,10 @@ func flattenIdentityUsers(users *[]identity.Identity) (*[]identity.Identity, err
 	}
 	results := make([]identity.Identity, len(*users))
 	for i, user := range *users {
-		if user.Descriptor == nil {
+		if user.SubjectDescriptor == nil {
 			return nil, fmt.Errorf(" User Object does not contain an id")
+		} else {
+			fmt.Printf("User %v has SubjectDescriptor: %v\n", user.ProviderDisplayName, *user.SubjectDescriptor)
 		}
 		newUser := identity.Identity{
 			Descriptor:          user.SubjectDescriptor,
@@ -97,6 +101,9 @@ func flattenIdentityUsers(users *[]identity.Identity) (*[]identity.Identity, err
 			ProviderDisplayName: user.ProviderDisplayName,
 			// Add other fields here if needed
 		}
+
+		// afficher le descriptor
+		fmt.Printf("Descriptor for the new user: %s\n", *newUser.Descriptor)
 		results[i] = newUser
 	}
 	return &results, nil
