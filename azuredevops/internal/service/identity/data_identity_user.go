@@ -63,7 +63,7 @@ func dataIdentitySourceUserRead(d *schema.ResourceData, m interface{}) error {
 	// Set id and user list for users data resource
 	targetUserID := targetUser.Id.String()
 	d.SetId(targetUserID)
-	d.Set("descriptor", targetUser.Descriptor)
+	d.Set("descriptor", targetUser.SubjectDescriptor)
 	return nil
 }
 
@@ -92,7 +92,7 @@ func flattenIdentityUsers(users *[]identity.Identity) (*[]identity.Identity, err
 			return nil, fmt.Errorf(" User Object does not contain an id")
 		}
 		newUser := identity.Identity{
-			Descriptor:          user.Descriptor,
+			Descriptor:          user.SubjectDescriptor,
 			Id:                  user.Id,
 			ProviderDisplayName: user.ProviderDisplayName,
 			// Add other fields here if needed
