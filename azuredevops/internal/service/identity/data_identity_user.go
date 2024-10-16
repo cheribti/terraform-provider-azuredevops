@@ -38,6 +38,7 @@ func DataIdentityUser() *schema.Resource {
 	}
 }
 
+// Lecture de la ressource de données.
 func dataIdentitySourceUserRead(d *schema.ResourceData, m interface{}) error {
 	clients := m.(*client.AggregatedClient)
 	userName := d.Get("name").(string)
@@ -69,6 +70,8 @@ func dataIdentitySourceUserRead(d *schema.ResourceData, m interface{}) error {
 	return nil
 }
 
+//	interroge ADO pour récupérer une liste des users en fonction du filtre
+//
 // Query AZDO for users with matching filter and search string
 func getIdentityUsersWithFilterValue(clients *client.AggregatedClient, searchFilter string, filterValue string) (*[]identity.Identity, error) {
 	// Get list of user with search filter and filter value provided at data source invocation.
@@ -84,6 +87,7 @@ func getIdentityUsersWithFilterValue(clients *client.AggregatedClient, searchFil
 }
 
 // Flatten Query Results
+// transforme la liste des users récupérée en un format simplifié (vérifie que chaque utilisateur possède un descriptor valide avant de l'ajouter à la liste transformée).
 func flattenIdentityUsers(users *[]identity.Identity) (*[]identity.Identity, error) {
 	if users == nil {
 		return nil, fmt.Errorf(" Input Users Parameter is nil")
@@ -108,6 +112,8 @@ func flattenIdentityUsers(users *[]identity.Identity) (*[]identity.Identity, err
 	}
 	return &results, nil
 }
+
+//filtre les utilisateurs en cherchant ceux dont le nom d'affichage contient la chaîne de caractères fournie (userName), en utilisant une comparaison insensible à la casse.
 
 // Filter results to validate user is correct. Occurs post-flatten due to missing properties based on search-filter.
 func validateIdentityUser(users *[]identity.Identity, userName string, searchFilter string) *identity.Identity {
